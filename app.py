@@ -86,3 +86,12 @@ def edit_page_post(user_id):
     db.session.add(user)
     db.session.commit()
     return redirect("/users")
+
+
+@app.route('/users/<int:user_id>/delete', methods=["POST"])
+def delete_user(user_id):
+    user = User.query.get(user_id)
+    # User.query.filter_by(id=user_id).delete()
+    db.session.delete(user)
+    db.session.commit()
+    return redirect("/users")

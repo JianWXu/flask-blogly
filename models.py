@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 import app
+from datetime import datetime
+from sqlalchemy import DateTime
 
 db = SQLAlchemy()
 
@@ -27,3 +29,17 @@ class User(db.Model):
     image_url = db.Column(db.String, nullable=False,
                           default=default_image
                           )
+
+
+class Post(db.Model):
+    """"Post."""
+    __tablename__ = "posts"
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+    title = db.Column(db.String(25), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(DateTime(timezone=True),
+                           default=datetime.utcnow, onupdate=datetime.utcnow)
+    user = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)

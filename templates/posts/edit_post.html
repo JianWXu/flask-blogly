@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Post Edit Page{% endblock %}
+
+{% block content %}
+
+<h1>Edit Post</h1>
+<br>
+<form action="" method="POST">
+    <label for="epost-title">Title</label>
+    <input type="text" name="epost-title" id="epost-title" placeholder={{post.title}}>
+<br>    
+    <label for="epost-content">Content</label>
+    <textarea name="epost-content" id="epost-content" rows="4" cols="50" placeholder={{post.content}}></textarea>
+<br>
+<a href="/" class="btn btn-outline-info">Cancel</a>
+<button type="submit" class="btn btn-success">Edit</button>
+
+{% endblock %}

@@ -42,4 +42,6 @@ class Post(db.Model):
     content = db.Column(db.Text, nullable=False)
     created_at = db.Column(DateTime(timezone=True),
                            default=datetime.utcnow, onupdate=datetime.utcnow)
-    user = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    user = db.relationship('User', backref='posts')

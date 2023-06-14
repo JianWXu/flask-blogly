@@ -6,7 +6,13 @@
 <h1>{{post.title}}</h1>
 <p>{{post.content}}</p>
 <p><i>By {{post.user.first_name}} {{post.user.last_name}}</i></p>
+<br>
+<em>Tags:</em>
+{% for tag in user.posttags.name %}
+    <span class="badge badge-primary">{{tag}}</span>
+{% endfor %}
 
+<br>
 
 <a href="/users/{{post.user.id}}" class="btn btn-outline-info">Cancel</a>
 <a href="/posts/{{post.id}}/edit" class="btn btn-primary">Edit</a>

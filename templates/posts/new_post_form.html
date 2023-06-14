@@ -8,10 +8,22 @@
 <form method="POST">
     <label for="npost-title">Title</label>
     <input type="text" name="npost-title" id="npost-title">
-<br>    
+    <br>    
     <label for="npost-content">Content</label>
     <textarea name="npost-content" id="npost-content" rows="4" cols="50"></textarea>
-<br>
+    <br>
+
+    
+    {% for tag in user.posttags.name %}
+        <input type="checkbox" name="{{tag}}" id="{{tag}}">
+        <label class="form-check-label" for="{{tag}}">
+            {{tag}}
+        </label>
+        <br>
+    {{% endfor %}}
+    
+    <br>
+
     <a href="/users/{{user.id}}" class="btn btn-info">Cancel</a>
     <button class="btn btn-success" type="submit">Add</button>
 </form>

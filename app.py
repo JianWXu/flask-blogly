@@ -2,7 +2,7 @@
 
 from flask import Flask, request, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Post
+from models import db, connect_db, User, Post, PostTag, Tag
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from dotenv import load_dotenv
@@ -139,3 +139,53 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
     return redirect(f'/users/{post.user_id}')
+
+
+@app.route('/tags')
+def all_tags():
+    tags = Tag.query.all()
+    return render_template('/tags/tag_list.html', tags=tags)
+
+
+@app.route('/tags/<int:id>')
+def tag_detail(id):
+    tag = Tag.query.get(id)
+    return render_template('/tags/tag_detail.html', tag=tag)
+
+
+@app.route('/tags/new')
+def new_tag():
+    return render_template('/tags/new_tag.html')
+
+
+@app.route('/tags/new', methods=["POST"])
+def add_new_tag():
+    create_tag = Tag(
+        name=request.form['tag-name']
+    )
+    db.session.add(create_tag)
+    db.session.commit()
+    return redirect('/tags')
+
+
+@app.route('/tags/<int:id>/edit')
+def edit_tag(id):
+    tag = Tag.query.get(id)
+    return render_template('/tags/edit_tag.html', tag=tag)
+
+
+@app.route('/tags/<int:id>/edit', methods=["POST"])
+def add_edit_tag(id):
+    tag = Tag.query.get(id)
+    tag.name = request.form['edit-tag']
+    db.session.add(tag)
+    db.session.commit()
+    return redirect('/tags')
+
+
+@app.route('/tags/<int:id>/delete', methods=["POST"])
+def delete_tag(id):
+    tag = Tag.query.get(id)
+    db.session.delete(tag)
+    db.session.commit()
+    return redirect('/tags')

@@ -44,16 +44,7 @@ class Post(db.Model):
                            default=datetime.utcnow, onupdate=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    user = db.relationship('User', backref='posts')
-
-
-class PostTag(db.Model):
-
-    __tablename__ = "posttags"
-
-    post_id = db.Column(db.Integer, db.ForeignKey(
-        'posts.id'), primary_key=True)
-    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), primary_key=True)
+    user = db.relationship('User', lazy='subquery', backref='posts')
 
 
 class Tag(db.Model):
@@ -64,3 +55,12 @@ class Tag(db.Model):
     name = db.Column(db.Text, unique=True, nullable=False)
 
     posts = db.relationship('Post', secondary='posttags', backref='tags')
+
+
+class PostTag(db.Model):
+
+    __tablename__ = "posttags"
+
+    post_id = db.Column(db.Integer, db.ForeignKey(
+        'posts.id'), primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), primary_key=True)

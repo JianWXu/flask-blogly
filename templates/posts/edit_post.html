@@ -12,15 +12,23 @@
         <label for="epost-content">Content</label>
         <textarea name="epost-content" id="epost-content" rows="4" cols="50" placeholder="{{post.content}}"></textarea>
     <br>
-
+    <br>
     
-        {% for tag in user.posttags.name %}
-            <input type="checkbox" name="{{tag}}" id="{{tag}}">
-            <label class="form-check-label" for="{{tag}}">
-                {{tag}}
+        {% for tag in tags %}
+            {% if tag in post.tags %}
+                <label>
+                    <input type="checkbox" name="tag-name" id="{{tag.name}}" value="{{tag.id}}" checked>
+                    {{tag.name}}
+                </label>
+                <br>
+            {% else %}
+            <label>
+                <input type="checkbox" name="tag-name" id="{{tag.name}}" value="{{tag.id}}">
+                {{tag.name}}
             </label>
             <br>
-        {{% endfor %}}
+            {% endif %}
+        {% endfor %}
         
         <br>
         

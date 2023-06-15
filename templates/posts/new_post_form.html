@@ -14,13 +14,13 @@
     <br>
 
     
-    {% for tag in user.posttags.name %}
-        <input type="checkbox" name="{{tag}}" id="{{tag}}">
-        <label class="form-check-label" for="{{tag}}">
-            {{tag}}
+    {% for tag in tags %}
+        <label>
+            <input type="checkbox" name="tag-name" id="{{tag.name}}" value="{{tag.id}}">
+            {{tag.name}}
         </label>
         <br>
-    {{% endfor %}}
+    {% endfor %}
     
     <br>
 

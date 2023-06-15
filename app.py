@@ -95,17 +95,22 @@ def delete_user(user_id):
 @app.route('/users/<int:user_id>/posts/new')
 def new_post_page(user_id):
     user = User.query.get(user_id)
-    return render_template("/posts/new_post_form.html", user=user)
+    tags = Tag.query.all()
+    return render_template("/posts/new_post_form.html", user=user, tags=tags)
 
 
 @app.route('/users/<int:user_id>/posts/new', methods=["POST"])
 def post_form(user_id):
+    checked_tags = Tag.query.filter(Tag.id.in_(
+        [tag_id for tag_id in request.form.getlist('tag-name')])).all()
     user = User.query.get(user_id)
     create_post = Post(
         title=request.form['npost-title'],
         content=request.form['npost-content'],
-        user=user
+        user=user,
+        tags=checked_tags
     )
+
     db.session.add(create_post)
     db.session.commit()
     return redirect(f"/users/{user_id}")
@@ -120,14 +125,19 @@ def post_detail(post_id):
 @app.route('/posts/<int:post_id>/edit')
 def edit_post_form(post_id):
     post = Post.query.get(post_id)
-    return render_template('/posts/edit_post.html', post=post)
+    tags = Tag.query.all()
+    return render_template('/posts/edit_post.html', post=post, tags=tags)
 
 
 @app.route('/posts/<int:post_id>/edit', methods=["POST"])
 def edit_form(post_id):
     post = Post.query.get(post_id)
+    checked_tags = Tag.query.filter(Tag.id.in_(
+        [tag_id for tag_id in request.form.getlist('tag-name')])).all()
+
     post.title = request.form['epost-title']
     post.content = request.form['epost-content']
+    post.tags = checked_tags
     db.session.add(post)
     db.session.commit()
     return redirect(f'/posts/{post_id}')
